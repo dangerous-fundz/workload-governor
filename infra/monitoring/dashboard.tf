@@ -197,7 +197,9 @@ resource "aws_cloudwatch_dashboard" "workload_governor" {
             ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", var.alb_arn_suffix,
               { label = "5xx Errors", color = "#ef4444" }],
             ["AWS/ApplicationELB", "HTTPCode_Target_5XX_Count", "LoadBalancer", var.alb_arn_suffix,
-              { label = "Target 5xx", color = "#f59e0b" }]
+              { label = "Target 5xx", color = "#f59e0b" }],
+            ["${var.service_name}/Application", "Http5xxCount",
+              { label = "Backend 5xx Spike", color = "#b91c1c" }]
           ]
           annotations = {
             horizontal = [{ label = "Alert threshold", value = 10, color = "#ef4444" }]

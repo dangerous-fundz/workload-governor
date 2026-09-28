@@ -97,15 +97,41 @@ All values can be overridden with `--set key=value` or a custom `-f values.yaml`
 | `service.port` | `3000` | Service port |
 | `service.targetPort` | `3000` | Container port |
 
-### Ingress
+### Ingress & Cert-Manager TLS
 
 | Key | Default | Description |
 |---|---|---|
 | `ingress.enabled` | `true` | Create Ingress resource |
 | `ingress.className` | `nginx` | Ingress class |
-| `ingress.annotations` | See values.yaml | Custom annotations |
-| `ingress.hosts` | `vesting-backend.example.com` | Hostname rules |
-| `ingress.tls` | See values.yaml | TLS secret mappings |
+| `ingress.annotations` | See values.yaml | Custom annotations (e.g. `cert-manager.io/cluster-issuer`) |
+| `ingress.hosts` | `vesting-backend.example.com` | Hostname routing rules and paths |
+| `ingress.tls` | See values.yaml | TLS certificate and host configurations |
+
+#### Automated TLS with cert-manager
+
+The ingress template dynamically renders cert-manager annotations and provisions TLS certificates via cluster issuers:
+
+```yaml
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: vesting-backend.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: vesting-backend-tls
+      hosts:
+        - vesting-backend.yourdomain.com
+```
+
+If `secretName` is omitted from a TLS entry, it automatically defaults to `{{ .Release.Name }}-tls`.
+
+---
 
 ### HPA
 

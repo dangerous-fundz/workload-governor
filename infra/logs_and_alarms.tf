@@ -145,11 +145,11 @@ resource "aws_cloudwatch_metric_alarm" "error_count_alarm" {
 }
 
 # ── Metric filter 2: HTTP 5xx response count ──────────────────────────────────
-# Counts log lines that record HTTP 5xx status codes.
+# Counts log lines that record HTTP status codes >= 500 from backend container logs.
 
 resource "aws_cloudwatch_log_metric_filter" "http_5xx" {
   name           = "${var.service_name}-http-5xx"
-  pattern        = "[..., status_code=5*, ...]"
+  pattern        = "{ ($.status >= 500) || ($.statusCode >= 500) }"
   log_group_name = aws_cloudwatch_log_group.ecs.name
 
   metric_transformation {
@@ -163,15 +163,15 @@ resource "aws_cloudwatch_log_metric_filter" "http_5xx" {
 
 resource "aws_cloudwatch_metric_alarm" "http_5xx_alarm" {
   alarm_name          = "${var.service_name}-high-5xx-rate"
-  alarm_description   = "More than 5 HTTP 5xx responses per minute for 2 consecutive periods"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 2
+  alarm_description   = "More than 10 HTTP 5xx responses in a 5-minute rolling window"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
   metric_name         = "Http5xxCount"
   namespace           = "${var.service_name}/Application"
-  period              = 60
+  period              = 300
   statistic           = "Sum"
-  threshold           = 5
-  treat_missing_data  = "breaching"
+  threshold           = 10
+  treat_missing_data  = "notBreaching"
 
   alarm_actions             = [aws_sns_topic.devops_alerts.arn]
   ok_actions                = [aws_sns_topic.devops_alerts.arn]

@@ -9,6 +9,12 @@ For guidelines on writing changelog entries see [docs/changelog-guide.md](docs/c
 
 ## [Unreleased]
 
+### Added
+- Add CloudWatch metric filter and 5-minute rolling window alarm for HTTP 5xx error rate spikes. (#865)
+- Add automated RDS snapshot restoration verification script `infra/rds-snapshot.sh --verify-restore`. (#866)
+- Attach AWS WAFv2 WebACL with IP rate limiting and AWS Common Rule Set to CloudFront. (#867)
+- Add cert-manager TLS annotation support and dynamic secret templating in Helm ingress. (#871)
+
 ---
 
 ## [0.3.0] - 2026-08-28

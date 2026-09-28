@@ -70,6 +70,7 @@ ingress:
   className: "nginx"
   # -- Additional annotations (e.g. cert-manager, rate limiting)
   annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "1m"
   # -- Ingress hostname rules

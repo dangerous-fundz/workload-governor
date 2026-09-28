@@ -19,3 +19,9 @@ variable "acm_certificate_arn" {
   type        = string
   default     = ""
 }
+
+variable "waf_rate_limit" {
+  description = "Maximum number of requests allowed from a single IP per 5-minute rolling window."
+  type        = number
+  default     = 2000
+}

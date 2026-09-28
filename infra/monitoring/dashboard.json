@@ -104,7 +104,8 @@
         "stat": "Sum",
         "metrics": [
           ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", "app/workload-governor-production/REPLACE_WITH_ACTUAL_SUFFIX", {"label": "5xx Errors", "color": "#ef4444"}],
-          ["AWS/ApplicationELB", "HTTPCode_Target_5XX_Count", "LoadBalancer", "app/workload-governor-production/REPLACE_WITH_ACTUAL_SUFFIX", {"label": "Target 5xx", "color": "#f59e0b"}]
+          ["AWS/ApplicationELB", "HTTPCode_Target_5XX_Count", "LoadBalancer", "app/workload-governor-production/REPLACE_WITH_ACTUAL_SUFFIX", {"label": "Target 5xx", "color": "#f59e0b"}],
+          ["workload-governor-production/Application", "Http5xxCount", {"label": "Backend 5xx Spike", "color": "#b91c1c"}]
         ],
         "annotations": {
           "horizontal": [{"label": "Alert threshold", "value": 10, "color": "#ef4444"}]

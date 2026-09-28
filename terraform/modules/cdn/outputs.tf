@@ -17,3 +17,13 @@ output "s3_bucket_arn" {
   description = "ARN of the S3 bucket."
   value       = aws_s3_bucket.frontend.arn
 }
+
+output "waf_web_acl_arn" {
+  description = "ARN of the WAFv2 WebACL associated with CloudFront."
+  value       = aws_wafv2_web_acl.cdn.arn
+}
+
+output "waf_web_acl_id" {
+  description = "ID of the WAFv2 WebACL."
+  value       = aws_wafv2_web_acl.cdn.id
+}
